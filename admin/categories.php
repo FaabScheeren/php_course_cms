@@ -76,8 +76,6 @@
                               $query = "SELECT * FROM categories";
                               $select_categories = mysqli_query($connection, $query);
 
-
-
                               while ($row = mysqli_fetch_assoc($select_categories)) {
                                   $cat_id = $row['cat_id'];
                                   $cat_title = $row['cat_title'];
