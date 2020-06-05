@@ -1,4 +1,4 @@
-<?php ob_start();
+<?php 
 // How to make easy multiple constants
 $db['db_host'] = "localhost";
 $db['db_user'] = "root";

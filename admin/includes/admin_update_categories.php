@@ -1,5 +1,5 @@
 <!-- Edit category -->
-<form action="categories.php" method="post">
+<form action="" method="post">
 <div class="form-group">
 <label for="cat-title">Edit Category</label>
 
@@ -28,6 +28,7 @@
               if(!$update_query) {
                 die("query failed".mysqli_error($connection));
               }
+              header("Location: ../admin/categories.php");
             }
 
           ?>
