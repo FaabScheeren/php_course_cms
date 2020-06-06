@@ -44,6 +44,7 @@
       }
     }
 
+    // $comments1=mysql_real_escape_string($comments1);
     $query = "UPDATE posts SET ";
     $query .= "post_category_id = '{$post_category_id}', ";
     $query .= "post_author = '{$post_author}', ";

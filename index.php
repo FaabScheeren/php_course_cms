@@ -18,27 +18,32 @@
             <!-- </div> -->
             <!-- First Blog Post -->
                 <?php
-                    $query = 'SELECT * FROM posts';
+                    // $query = "SELECT * FROM posts WHERE post_status = 'published' ";
+                    $query = "SELECT * FROM posts";
                     $select_all_posts = mysqli_query($connection,$query);
                     while ($row = mysqli_fetch_assoc($select_all_posts)) {
+                        $post_id = $row['post_id'];
                         $post_title = $row['post_title'];
                         $post_author = $row['post_author'];
                         $post_date = $row['post_date'];
                         $post_image = $row['post_image'];
-                        $post_content = $row['post_content'];
+                        $post_content = substr($row['post_content'], 0,250);
+                        $post_status = $row['post_status'];
 
-
+                        if($post_status !== 'published') {
+                            echo "<h2>No posts sorry!</h2>";
+                        } else {
                 ?>
                 <div class="row">
-                        <h2>
-                        <a href="#"><?php echo $post_title ?></a>
+                    <h2>
+                        <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title ?></a>
                     </h2>
                     <p class="lead">
                         by <a href="index.php"><?php echo $post_author ?></a>
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date ?></p>
                     <hr>
-                    <img class="img-responsive" src=<?php echo $post_image ?> alt="" width="700">
+                    <a href="post.php?p_id=<?php echo $post_id; ?>"><img class="img-responsive" src=images/<?php echo $post_image ?> alt="" width="700"></a>
                     <hr>
                     <p><?php echo $post_content ?></p>
                     <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
@@ -46,7 +51,7 @@
                     </div>
                    
 
-                <?php } ?>
+                <?php }} ?>
                 </div>
 
 
