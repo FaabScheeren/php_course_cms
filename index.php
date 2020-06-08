@@ -30,9 +30,7 @@
                         $post_content = substr($row['post_content'], 0,250);
                         $post_status = $row['post_status'];
 
-                        if($post_status !== 'published') {
-                            echo "<h2>No posts sorry!</h2>";
-                        } else {
+                        if($post_status == 'published') {
                 ?>
                 <div class="row">
                     <h2>

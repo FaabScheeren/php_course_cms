@@ -19,7 +19,10 @@
       $create_user_query = mysqli_query($connection, $query);
 
       confirm($create_user_query);
-      header("Location: users.php");
+
+      echo "User created: " . " " . "<a href='users.php'>View users</a> ";
+
+      // header("Location: users.php");
    }
 ?>
 
