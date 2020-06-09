@@ -59,8 +59,11 @@
 
     // echo $query;
     $update_post_query = mysqli_query($connection, $query);
-
     confirm($update_post_query);
+
+    header("Location: posts.php"); 
+    exit;
+    echo "<p class='bg-success'>Post updated. <a href='../post.php?p_id={$post_id}'>View posts</a> or <a href='posts.php'>view all posts.</a></p>";
   }
 ?>
 
@@ -95,7 +98,7 @@
 
   <!-- Post status -->
   <div class="form-group">
-    <select name="post_status" id="">
+    <select name="post_status" id="" required>
         <?php 
           if($post_status == "published") {
             echo "<option selected='selected' value='published'>Published</option>";
@@ -123,7 +126,7 @@
   
   <div class="form-group">
     <label for="post_content">Post Content</label>
-    <textarea class="form-control "name="post_content" id="" cols="30" rows="10">
+    <textarea class="form-control "name="post_content" id="body" cols="30" rows="10">
       <?php echo $post_content; ?>
     </textarea>
   </div>

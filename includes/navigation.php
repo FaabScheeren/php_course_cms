@@ -10,6 +10,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            
             <a class="navbar-brand" href="index.php">C M S</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -24,15 +25,20 @@
                     }
                 ?>
                 <li><a href="admin/index.php">Admin</a></li>
-
-
+                <?php 
+                if (session_status() === PHP_SESSION_NONE) session_start(); {
+                    if(isset($_SESSION['username'])) {
+                        if(isset($_GET['p_id'])) {
+                            $post_id = $_GET['p_id'];
+                            echo "<li><a href='admin/posts.php?source=edit_post&p_id={$post_id}'>Edit post</a></li>";
+                        }
+                    }      
+                }
+                ?>
+                <li>
+                    <a href="registration.php">Registration</a>
+                </li>
                 <!-- <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
                     <a href="#">Contact</a>
                 </li> -->
             </ul>

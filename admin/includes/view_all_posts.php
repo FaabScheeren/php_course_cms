@@ -1,6 +1,50 @@
+<?php 
+  if(isset($_POST['checkBoxArray'])) {
+    forEach($_POST['checkBoxArray'] as $postValueId) {
+      $bulk_options = $_POST['bulk_options'];
+
+      switch ($bulk_options) {
+        case 'publish':
+          $query = "UPDATE posts SET post_status = 'published' WHERE post_id = $postValueId";
+          $update_to_published_status = mysqli_query($connection, $query);
+          confirm($update_to_published_status);
+        break;
+        case 'draft':
+          $query = "UPDATE posts SET post_status = 'draft' WHERE post_id = $postValueId";
+          $update_to_draft_status = mysqli_query($connection, $query);
+          confirm($update_to_draft_status);
+        break;
+        case 'delete':
+          $query = "DELETE FROM posts WHERE post_id = $postValueId";
+          $delete_posts_bulk = mysqli_query($connection, $query);
+          confirm($delete_posts_bulk);
+        break;
+      }
+    }
+  }
+?>
+
+<form method="post" action="">
+
 <table class="table table-bordered table-hover">
+
+<div id="bulkOptionsContainer" class="col-xs-4">
+  <select name="bulk_options" class="form-control" >
+    <option value="">Select options</option>
+    <option value="publish">Publish</option>
+    <option value="draft">Draft</option>
+    <option value="delete">Delete</option>
+  </select>
+</div>
+
+<div class="col-xs-4">
+  <input type="submit" name="submit" class="btn btn-success" value="Apply">
+  <a class="btn btn-primary" href="posts.php?source=add_posts">Add new</a>
+</div>
+
   <thead>
     <tr>
+      <th><input type="checkbox" id="selectAllBoxes"></th>
       <th>Id</th>
       <th>Author</th>
       <th>Title</th>
@@ -29,10 +73,15 @@
         $post_comment_count = $row['post_comment_count'];
         $post_status = $row['post_status'];
     
-        echo "<tr>
+        
+        echo "<tr>";
+        ?>
+        <td><input class='checkBoxes' type='checkbox' name='checkBoxArray[]' value='<?php echo $post_id; ?>'></td>
+        <?php
+        echo "
         <td>$post_id</td>
         <td>$post_author</td>
-        <td>$post_title</td>";
+        <td><a href='../post.php?p_id=$post_id'>$post_title</a></td>";
           $query = "SELECT * FROM categories WHERE cat_id = {$post_category_id}";
           $select_categories_id = mysqli_query($connection, $query);
 
@@ -56,7 +105,7 @@
     ?>
   </tbody>
 </table>
-
+</form>
 <?php                           
   if(isset($_GET['delete'])) {
     $the_post_id = $_GET['delete'];
@@ -65,6 +114,6 @@
     $delete_query = mysqli_query($connection, $query);
 
     confirm($delete_query);
-    header("Location: posts.php");
+    // header("Location: posts.php");
   }
 ?>

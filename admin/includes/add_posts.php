@@ -13,17 +13,20 @@
       $post_content      = $_POST['post_content'];
       $post_date         = date('d-m-y');
 
-      // $post_comment_count = 0;
+      $post_comment_count = 0;
 
       move_uploaded_file($post_image_temp, "../images/$post_image" );
 
-      $query = "INSERT INTO posts(post_category_id,post_author, post_title, post_date, post_image, post_content,post_tags,post_status) ";
-      $query .= "VALUES({$post_category_id}, '{$post_author}','{$post_title}',now(), '{$post_image}','{$post_content}','{$post_tags}', '{$post_status}') ";  
+      $query = "INSERT INTO posts(post_category_id,post_author, post_title, post_date, post_image, post_content,post_tags,post_status, post_comment_count) ";
+      $query .= "VALUES({$post_category_id}, '{$post_author}','{$post_title}',now(), '{$post_image}','{$post_content}','{$post_tags}', '{$post_status}', '{$post_comment_count}') ";  
 
       $create_post_query = mysqli_query($connection, $query);
 
       confirm($create_post_query);
-      header("Location: posts.php");
+      $the_post_id = mysqli_insert_id($connection);
+
+      // header("Location: posts.php");
+      echo "<p class='bg-success'>Post created. <a href='../post.php?p_id={$the_post_id}'>View posts</a> or <a href='posts.php'>view all posts.</a></p>";
    }
 ?>
 
@@ -65,8 +68,8 @@
   
 
   <div class="form-group">
-    <select name="post_status" id="">
-        <option value="draft">Post Status</option>
+    <select name="post_status" id="" required>
+        <option value="">Post Status</option>
         <option value="published">Published</option>
         <option value="draft">Draft</option>
     </select>
@@ -84,7 +87,7 @@
   
   <div class="form-group">
     <label for="post_content">Post Content</label>
-    <textarea class="form-control "name="post_content" id="" cols="30" rows="10">
+    <textarea class="form-control "name="post_content" id="body" cols="30" rows="10">
     </textarea>
   </div>
 
