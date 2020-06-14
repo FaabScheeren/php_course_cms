@@ -13,6 +13,8 @@
 
       move_uploaded_file($user_image_temp, "../images/$user_image" );
 
+      $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
+
       $query = "INSERT INTO users(user_firstname, user_lastname, user_role, username, user_email, user_password, user_image, user_randSalt) ";
       $query .= "VALUES('{$user_firstname}', '{$user_lastname}','{$user_role}', '{$user_username}','{$user_email}','{$user_password}', '{$user_image}', '{$user_randSalt}') ";  
 

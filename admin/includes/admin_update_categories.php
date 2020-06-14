@@ -21,11 +21,14 @@
           // Update query
             if (isset($_POST['update_category'])) {
               $the_cat_title = $_POST['cat_title'];
-              // echo $the_cat_title;
-              // echo $cat_id;
-              $query = "UPDATE categories SET cat_title = '$the_cat_title' WHERE cat_id = $cat_id ";
-              $update_query = mysqli_query($connection, $query);
-              if(!$update_query) {
+              // $query = "UPDATE categories SET cat_title = '$the_cat_title' WHERE cat_id = $cat_id ";
+              // $update_query = mysqli_query($connection, $query);
+
+              $stmt = mysqli_prepare($connection, "UPDATE categories SET cat_title = ? WHERE cat_id = ? ");
+              mysqli_stmt_bind_param($stmt, 'si', $the_cat_title, $cat_id);
+              mysqli_stmt_execute($stmt);
+
+              if(!$stmt) {
                 die("query failed".mysqli_error($connection));
               }
               header("Location: ../admin/categories.php");

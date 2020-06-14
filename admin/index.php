@@ -2,27 +2,6 @@
 
     <div id="wrapper">
 
-    <?php 
-        $session = session_id();
-        $time = time();
-        $time_out_in_seconds = 60;
-        $time_out = $time - $time_out_in_seconds;
-
-        $query = "SELECT * FROM users_online WHERE session = '$session' ";
-        $send_query = mysqli_query($connection, $query);
-        $count = mysqli_num_rows($send_query);
-
-        if ($count == null) {
-            confirm(mysqli_query($connection, "INSERT INTO users_online(session, time) VALUES('$session', '$time')"));
-            
-        } else {
-            mysqli_query($connection, "UPDATE users_online SET time = '$time' WHERE session = '$session' ");
-        }
-
-        $users_online = mysqli_query($connection, "SELECT * FROM users_online WHERE time > '$time_out' ");
-        $count_user = mysqli_num_rows($users_online);
-        ?>
-
         <!-- Navigation -->
         <?php include 'includes/admin_navigation.php' ?>
 
@@ -37,7 +16,6 @@
                                 Welcome
                             <small><?php echo $_SESSION['username']?></small>
                         </h1>
-                        <h1><?php echo $count_user ?></h1>
                     </div>
                     <!-- /.row -->                
                     <div class="row">
@@ -51,12 +29,8 @@
                                         <div class="col-xs-9 text-right">
 
                                         <?php 
-                                            $query = "SELECT * FROM posts";
-                                            $select_all_posts = mysqli_query($connection, $query);
-
-                                            confirm($select_all_posts);
-                                            $post_counts = mysqli_num_rows($select_all_posts);
-
+                                            
+                                            $post_counts = recordCount('posts');
                                             echo "<div class='huge'>$post_counts</div>"
                                         ?>
 
@@ -83,12 +57,7 @@
                                         <div class="col-xs-9 text-right">
 
                                         <?php 
-                                            $query = "SELECT * FROM comments";
-                                            $select_all_comments = mysqli_query($connection, $query);
-
-                                            confirm($select_all_comments);
-                                            $comment_counts = mysqli_num_rows($select_all_comments);
-
+                                            $comment_counts = recordCount('comments');
                                             echo "<div class='huge'>$comment_counts</div>"
                                         ?>
 
@@ -115,12 +84,7 @@
                                         <div class="col-xs-9 text-right">
 
                                         <?php 
-                                            $query = "SELECT * FROM users";
-                                            $select_all_users = mysqli_query($connection, $query);
-
-                                            confirm($select_all_users);
-                                            $user_counts = mysqli_num_rows($select_all_users);
-
+                                            $user_counts = recordCount('users');
                                             echo "<div class='huge'>$user_counts</div>"
                                         ?>
 
@@ -147,12 +111,7 @@
                                         <div class="col-xs-9 text-right">
 
                                         <?php 
-                                            $query = "SELECT * FROM categories";
-                                            $select_all_categories = mysqli_query($connection, $query);
-
-                                            confirm($select_all_categories);
-                                            $category_counts = mysqli_num_rows($select_all_categories);
-
+                                            $category_counts = recordCount('categories');
                                             echo "<div class='huge'>$category_counts</div>"
                                         ?>
 
@@ -175,27 +134,12 @@
                 <!-- /.row -->
 
                 <?php 
-                    $query = "SELECT * FROM posts WHERE post_status = 'published'";
-                    $select_all_published_posts = mysqli_query($connection, $query);
-                    confirm($select_all_published_posts);
-                    $post_published_counts = mysqli_num_rows($select_all_published_posts);
-
-                    $query = "SELECT * FROM posts WHERE post_status = 'draft'";
-                    $select_all_draft_posts = mysqli_query($connection, $query);
-                    confirm($select_all_draft_posts);
-                    $post_draft_counts = mysqli_num_rows($select_all_draft_posts);
-
-                    $query = "SELECT * FROM comments WHERE comment_status = 'unapproved'";
-                    $unapproved_comments = mysqli_query($connection, $query);
-                    confirm($unapproved_comments);
-                    $unapproved_comments_count = mysqli_num_rows($unapproved_comments);
-
-                    $query = "SELECT * FROM users WHERE user_role = 'subscriber'";
-                    $select_all_subsribers = mysqli_query($connection, $query);
-                    confirm($select_all_subsribers);
-                    $subscriber_count = mysqli_num_rows($select_all_subsribers);
+                    // SELECT query with function that containts three dynamic arguments
+                    $post_published_counts = checkStatus('posts', 'post_status', 'published');
+                    $post_draft_counts = checkStatus('posts', 'post_status', 'draft');
+                    $unapproved_comments_count = checkStatus('comments', 'comment_status', 'unapproved');
+                    $subscriber_count = checkStatus('users', 'user_role', 'subscriber');
                 ?>
-
 
                 <div class="row">
                     <script type="text/javascript">

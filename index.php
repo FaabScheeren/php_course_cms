@@ -1,3 +1,4 @@
+<?php ob_start();?>
 <?php include 'includes/header.php' ?>
 
     <!-- Navigation -->
@@ -32,9 +33,12 @@
             <!-- </div> -->
             <!-- First Blog Post -->
                 <?php
-                $select_post_query_count = "SELECT * FROM posts";
+                $select_post_query_count = "SELECT * FROM posts WHERE post_status = 'published' ";
                 $post_query_count = mysqli_query($connection, $select_post_query_count);
                 $count_posts = mysqli_num_rows($post_query_count);
+                if($count_posts < 1) {
+                    echo "<h1 class='text-center'>No posts!</h1>";
+                } else {
 
                 $count = ceil($count_posts / 5);
 
@@ -49,12 +53,10 @@
                         $post_image = $row['post_image'];
                         $post_content = substr($row['post_content'], 0,250);
                         $post_status = $row['post_status'];
-
-                        if($post_status == 'published') {
                 ?>
                 <div class="row">
                     <h2>
-                        <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title ?></a>
+                        <a href="post/<?php echo $post_id; ?>"><?php echo $post_title ?></a>
                     </h2>
                     <p class="lead">
                         by <a href="author_post.php?author=<?php echo $post_author; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_author ?></a>
@@ -74,7 +76,7 @@
 
                     <ul class="pager">
                         <?php 
-                        for($i = 1; $i <= $count; $i++) {
+                        for($i = 1; $i <= $count_posts; $i++) {
                             if ($i == $page) {
                                 echo "<li><a class='active-link' href='index.php?page={$i}'>{$i}</a></li>";
                             } else {

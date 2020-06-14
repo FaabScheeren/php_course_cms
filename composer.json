@@ -1,0 +1,17 @@
+{
+  "name": "mysenden/cms",
+  "authors": [
+    {
+      "name": "FaabScheeren",
+      "email": "f.scheeren@outlook.com"
+    }
+  ],
+  "autoload": {
+    "classmap": [
+      "classes"
+    ]
+  },
+  "require": {
+    "phpmailer/phpmailer": "^6.1"
+  }
+}

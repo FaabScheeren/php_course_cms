@@ -85,16 +85,47 @@
               $cat_id = $row['cat_id'];
               $cat_title = $row['cat_title'];
 
-              echo "<option value='{$cat_id}'>$cat_title</option>";
+              if($cat_id == $post_category_id) {
+                echo "<option selected value='{$cat_id}'>$cat_title</option>";
+              } else {
+                echo "<option value='{$cat_id}'>$cat_title</option>";
+              }
+
           }
         ?>
       </select>
   </div>
 
   <div class="form-group">
+    <label for="post_author">Post Author</label>
+    <br>
+    <select name="post_author" required>
+      <?php 
+        $query = "SELECT * FROM users WHERE user_role = 'admin' ";
+        $select_users = mysqli_query($connection, $query);
+
+        confirm($select_users);
+
+        echo "<option value=''>Choose author</option>";
+
+        while ($row = mysqli_fetch_assoc($select_users)) {
+            $user_id = $row['user_id'];
+            $username = $row['username'];
+            
+            if ($user_id == $post_author) {
+              echo "<option selected='selected' value='{$user_id}'>$username</option>";
+            } else {
+              echo "<option value='{$user_id}'>$username</option>";
+            }
+        }
+      ?>
+    </select>
+  </div>
+
+  <!-- <div class="form-group">
     <label for="title">Post Author</label>
     <input value="<?php echo $post_author; ?>" type="text" class="form-control" name="post_author">
-  </div>
+  </div> -->
 
   <!-- Post status -->
   <div class="form-group">

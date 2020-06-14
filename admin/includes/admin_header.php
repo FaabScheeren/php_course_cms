@@ -7,14 +7,10 @@
     if (!isset($_SESSION['role'])) {
         header("Location: ../index.php");
     } 
-    // echo $_SESSION['role'];
     else {
         if($_SESSION['role'] !== 'admin') {
             header("Location: ../index.php");
         } 
-        // else {
-        //     header("Location: index.php");
-        // }
     }
 ?>
 
@@ -47,7 +43,7 @@
     <!-- Nice looking editor for posts -->
     <script src="https://cdn.ckeditor.com/ckeditor5/19.1.1/classic/ckeditor.js"></script>
 
-
+    <script src="js/jquery.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

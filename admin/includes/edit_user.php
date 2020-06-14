@@ -1,5 +1,5 @@
 <?php
-// Query data from database to put it as start value in the fields
+  // Query data from database to put it as start value in the fields
   if(isset($_GET['edit_user'])) {
     $the_user_id = $_GET['edit_user'];
 
@@ -18,7 +18,6 @@
         $user_password = $row['user_password'];
         $user_randSalt = $row['user_randSalt'];
       }
-
   }
 
   // Send changes to the database
@@ -45,16 +44,7 @@
         }
       }
 
-      // $query = "SELECT user_randSalt FROM users";
-      // $select_randsalt_query = mysqli_query($connection, $query);
-
-      // if (!$select_randsalt_query) {
-      //     die("Query failed" . mysqli_error($connection));
-      // }
-
-      // $row = mysqli_fetch_array($select_randsalt_query);
-      // $salt = $row['user_randSalt'];
-      $hashed_password = crypt($user_password, $user_randSalt);
+      $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
 
       $query = "UPDATE users SET ";
       $query .= "user_firstname = '{$user_firstname}', ";
@@ -62,12 +52,10 @@
       $query .= "user_role = '{$user_role}', ";
       $query .= "username = '{$user_username}', ";
       $query .= "user_email = '{$user_email}', ";
-      $query .= "user_password = '{$hashed_password}' ";
+      $query .= "user_password = '{$user_password}' ";
       $query .= "WHERE user_id = {$the_user_id}";
 
-      // echo $query;
       $update_user_query = mysqli_query($connection, $query);
-
       confirm($update_user_query);
       header("Location: users.php");
    }
@@ -79,35 +67,10 @@
     <input type="text" class="form-control" name="user_firstname" value="<?php echo $user_firstname ?>">
   </div>
 
-  <!-- <div class="form-group">
-    <label for="Category">Post category id</label>
-    <input type="text" class="form-control" name="post_category">
-  </div> -->
-
   <div class="form-group">
     <label for="user_lastname">Lastname</label>
     <input type="text" class="form-control" name="user_lastname" value="<?php echo $user_lastname ?>">
   </div>
-  
-  <!-- <div class="form-group">
-    <label for="Category">Role</label>
-    <br>
-    <select name="post_category">
-      <?php 
-        // $query = "SELECT * FROM categories";
-        // $select_categories_id = mysqli_query($connection, $query);
-
-        // confirm($select_categories_id);
-
-        // while ($row = mysqli_fetch_assoc($select_categories_id)) {
-        //     $cat_id = $row['cat_id'];
-        //     $cat_title = $row['cat_title'];
-
-        //     echo "<option value='{$cat_id}'>$cat_title</option>";
-        // }
-      ?>
-    </select>
-  </div> -->
 
   <div class="form-group">
     <label for="user_role">Role</label>

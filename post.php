@@ -21,16 +21,25 @@
                 <?php
                 if(isset($_GET['p_id'])) {
                     $the_post_id = $_GET['p_id'];
-                    
-                    $view_query = "UPDATE posts SET post_view_count = post_view_count + 1 WHERE post_id = $the_post_id";
+                    $view_query = "UPDATE posts SET post_view_count = post_view_count + 1 WHERE post_id = $the_post_id ";
                     $send_query = mysqli_query($connection, $view_query);
-
+                    
                     if (!$send_query) {
                         die("Query failed" . mysqli_error($connection));
                     }
 
-                    $query = "SELECT * FROM posts WHERE post_id = $the_post_id";
+                    
+                    if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+                        $query = "SELECT * FROM posts WHERE post_id = $the_post_id";
+                    } else {
+                        $query = "SELECT * FROM posts WHERE post_id = $the_post_id AND post_status = 'published' ";
+                    }
+
                     $select_all_posts = mysqli_query($connection,$query);
+
+                    if (mysqli_num_rows($select_all_posts) < 1) {
+                        echo "<h1 class='text-center'>No post!</h1>";      
+                    }
                     while ($row = mysqli_fetch_assoc($select_all_posts)) {
                         $post_title = $row['post_title'];
                         $post_author = $row['post_author'];
@@ -75,13 +84,10 @@
                                     die("Query failed " . mysqli_error($connection));
                                 }
     
-                                $query_count = "UPDATE posts SET post_comment_count = post_comment_count + 1 ";
-                                $query_count .= "WHERE post_id = $the_post_id ";
-    
-                                $update_comment_count = mysqli_query($connection, $query_count);
-                                if (!$update_comment_count) {
-                                    die("Query failed " . mysqli_error($connection));
-                                }
+                                // $update_comment_count = mysqli_query($connection, $query_count);
+                                // if (!$update_comment_count) {
+                                //     die("Query failed " . mysqli_error($connection));
+                                // }
                             } else {
                                 echo "<script>alert('Fields can not be empty')</script>";
                             }
@@ -137,7 +143,7 @@
                             <?php echo $comment_content; ?>
                         </div>
                     </div>
-                <?php } }    else {
+                <?php }}    else {
 
 
                 header("Location: index.php");

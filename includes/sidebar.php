@@ -1,3 +1,17 @@
+<?php 
+    if(ifItIsMethod('post')) {
+        if(isset($_POST['login'])) {
+            if(isset($_POST['username']) && isset($_POST['password'])) {
+                $username = $_POST['username'];
+                $password = $_POST['password'];
+                login_user($username, $password);
+            } else {
+                redirect("index");
+            }
+        }
+    }
+?>
+
 <div class="col-md-4">
 
     <!-- Blog Search Well -->
@@ -18,19 +32,31 @@
 
     <!-- Login -->
     <div class="well">
-        <h4>Login</h4>
-        <form action="includes/login.php" method="post" role="form">
-        <div class="form-group">
-            <input name="username" type="text" class="form-control" placeholder="Enter username">
-        </div>
-        <div class="input-group">
-            <input name="password" type="text" class="form-control" placeholder="Enter password">
-            <span class="input-group-btn">
-                <button class="btn btn-primary" name="login" type="submit">Login</button>
-            </span>
-        </div>
-        </form>
-        <!-- /.input-group -->
+        <?php if(isset($_SESSION['role'])):$user = $_SESSION['username'];?>
+
+            <h4>Logged in as $user</h4>
+            <a href='includes/logout.php' class='btn btn-primary' >Logout</a>
+            
+        <?php else: ?>
+            <h4>Login</h4>
+            <form  method='post' role='form'>
+            <div class='form-group'>
+                <input name='username' type='text' class='form-control' placeholder='Enter username'>
+            </div>
+            <div class='input-group'>
+                <input name='password' type='text' class='form-control' placeholder='Enter password'>
+                <span class='input-group-btn'>
+                    <button class='btn btn-primary' name='login' type='submit'>Login</button>
+                </span>
+            </div>
+            <div class='form-group'>
+            <a href='forgot_password.php?forgot=<?php echo uniqid(true) ?>'>Forgot password?</a>
+            </div>
+            </form>
+            <!-- /.input-group -->
+        <?php endif; ?>
+
+        
     </div>
 
 

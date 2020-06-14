@@ -14,11 +14,12 @@
       $post_date         = date('d-m-y');
 
       $post_comment_count = 0;
+      $post_view_count = 0;
 
       move_uploaded_file($post_image_temp, "../images/$post_image" );
 
-      $query = "INSERT INTO posts(post_category_id,post_author, post_title, post_date, post_image, post_content,post_tags,post_status, post_comment_count) ";
-      $query .= "VALUES({$post_category_id}, '{$post_author}','{$post_title}',now(), '{$post_image}','{$post_content}','{$post_tags}', '{$post_status}', '{$post_comment_count}') ";  
+      $query = "INSERT INTO posts(post_category_id,post_author, post_title, post_date, post_image, post_content,post_tags,post_status, post_comment_count, post_view_count) ";
+      $query .= "VALUES({$post_category_id}, '{$post_author}','{$post_title}',now(), '{$post_image}','{$post_content}','{$post_tags}', '{$post_status}', {$post_comment_count}, {$post_view_count}) ";  
 
       $create_post_query = mysqli_query($connection, $query);
 
@@ -42,7 +43,7 @@
   </div> -->
 
   <div class="form-group">
-    <label for="Category">Post category id</label>
+    <label for="Category">Post category</label>
     <br>
     <select name="post_category">
       <?php 
@@ -62,12 +63,38 @@
   </div>
 
   <div class="form-group">
+    <label for="author">Post Author</label>
+    <br>
+    <select name="author" required>
+      <?php 
+        $query = "SELECT * FROM users WHERE user_role = 'admin' ";
+        $select_users = mysqli_query($connection, $query);
+
+        confirm($select_users);
+
+        echo "<option value=''>Choose author</option>";
+
+        while ($row = mysqli_fetch_assoc($select_users)) {
+            $user_id = $row['user_id'];
+            $username = $row['username'];
+
+            
+            echo "<option value='{$user_id}'>$username</option>";
+        }
+      ?>
+    </select>
+  </div>
+
+
+  <!-- <div class="form-group">
     <label for="title">Post Author</label>
     <input type="text" class="form-control" name="author">
-  </div>
+  </div> -->
   
 
   <div class="form-group">
+    <label for="post_status">Post Status</label>
+    <br>
     <select name="post_status" id="" required>
         <option value="">Post Status</option>
         <option value="published">Published</option>
