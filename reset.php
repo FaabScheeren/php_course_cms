@@ -7,20 +7,12 @@
         redirect('index');
     }
 
-    // $token = "1a3edd5a32bf59e549f2624afc2ae965c75d6f706643ae6217001de005e6c65fc5c3704b9b604811a24fa5014ed72da9ff4c";
-    // $email = 'Bal@Bal.nl';
-
     if($stmt = mysqli_prepare($connection, "SELECT username, user_email, token FROM users WHERE token=?")) {
         mysqli_stmt_bind_param($stmt, 's', $_GET['token']);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_bind_result($stmt, $username, $user_email, $token);
         mysqli_stmt_fetch($stmt);
         mysqli_stmt_close($stmt);
-        // echo $user_email;
-
-        // if($_GET['token'] !== $token || $_GET['email'] !== $email) {
-        //     redirect('index');
-        // }
 
         if(isset($_POST['password']) && isset($_POST['passwordConfirm'])) {
             $password = $_POST['password'];

@@ -38,16 +38,16 @@
                         // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
                         $mail->SMTPDebug = 0;
                         $mail->isSMTP();
-                        // $mail->Host       = Config::SMTP_HOST;
-                        $mail->Host       = 'smtp.mailtrap.io';
+                        $mail->Host       = Config::SMTP_HOST;
+                        // $mail->Host       = 'smtp.mailtrap.io';
                         $mail->SMTPAuth   = true;
-                        // $mail->Username   = Config::SMTP_USER;
-                        $mail->Username   = '6096c78791de6d';
-                        // $mail->Password   = Config::SMTP_PASSWORD;
-                        $mail->Password   = "2eca3852f1ba35";
+                        $mail->Username   = Config::SMTP_USER;
+                        // $mail->Username   = '6096c78791de6d';
+                        $mail->Password   = Config::SMTP_PASSWORD;
+                        // $mail->Password   = "2eca3852f1ba35";
                         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                        // $mail->Port       = Config::SMTP_HOST;
-                        $mail->Port       = 2525;    
+                        $mail->Port       = Config::SMTP_HOST;
+                        // $mail->Port       = 2525;    
                         $mail->CharSet = 'UTF-8';
 
                         //Recipients
