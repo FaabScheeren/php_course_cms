@@ -35,7 +35,7 @@
         <?php if(isset($_SESSION['role'])):$user = $_SESSION['username'];?>
 
             <h4>Logged in as $user</h4>
-            <a href='includes/logout.php' class='btn btn-primary' >Logout</a>
+            <a href='/cms/includes/logout.php' class='btn btn-primary' >Logout</a>
             
         <?php else: ?>
             <h4>Login</h4>

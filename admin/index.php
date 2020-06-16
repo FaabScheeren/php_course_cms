@@ -14,7 +14,7 @@
                     <div class="col-lg-12">
                         <h1 class="page-header">
                                 Welcome
-                            <small><?php echo $_SESSION['username']?></small>
+                            <small><?php echo get_user_name() ?></small>
                         </h1>
                     </div>
                     <!-- /.row -->                
@@ -152,8 +152,7 @@
                             <?php 
                                 $elements_text = ["All posts", "Active posts", "Draft posts", "Comments", "Pending comments", 'Users', "Subscribers", "Categories"];
                                 $elements_count = [$post_counts, $post_published_counts, $post_draft_counts, $comment_counts, $unapproved_comments_count, $user_counts, $subscriber_count, $category_counts];
-
-                                for($i = 0; $i < 7; $i++) {
+                                for($i = 0; $i < count($elements_text)  ; $i++) {
                                     echo "['{$elements_text[$i]}'" . ", " . "{$elements_count[$i]}],";
                                 }
                             ?>

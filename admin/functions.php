@@ -1,4 +1,13 @@
 <?php 
+  function query($query) {
+    global $connection;
+    $result = mysqli_query($connection, $query);
+    confirm($result);
+    return $result;
+  }
+?>
+
+<?php 
   function escape($string) {
     global $connection;
     return mysqli_real_escape_string($connection, trim($string));
@@ -261,6 +270,7 @@ function checkStatus($table, $column, $value) {
         $db_user_role = $row['user_role'];
 
         if (password_verify($password, $db_user_password)) {
+          $_SESSION['user_id'] = $db_user_id;
           $_SESSION['username'] = $db_username;
           $_SESSION['firstname'] = $db_user_firstname;
           $_SESSION['lastname'] = $db_user_lastname;
@@ -271,5 +281,50 @@ function checkStatus($table, $column, $value) {
         return false;
       }
     }
+  }
+?>
+
+<?php 
+  function imagePlaceholder($image='') {
+    if(!$image) {
+      return 'placeholder.png';
+    } else {
+      return $image;
+    }
+  }
+?>
+
+<?php 
+  function loggedInUserId() {
+    if(isLoggedIn()) {
+      $result = query("SELECT * FROM users WHERE username='" . $_SESSION['username'] . "'");
+      $select_user = mysqli_fetch_array($result);
+      return mysqli_num_rows($result) >= 1 ? $select_user['user_id'] : false;
+
+      // if(mysqli_num_rows($result) >= 1) {
+      //   return $select_user['user_id'];
+      // }
+    }
+    return false;
+  }
+?>
+
+<?php 
+  function userLikedPost($post_id) {
+    $result = query("SELECT * FROM likes WHERE user_id=" . loggedInUserId() . " AND post_id={$post_id} ");
+    return mysqli_num_rows($result) >= 1 ? true : false;
+  }
+?>
+
+<?php 
+  function getPostLikes($post_id) {
+    $result = query("SELECT * FROM likes WHERE post_id=$post_id");
+    echo mysqli_num_rows($result);
+  }
+?>
+
+<?php 
+  function get_user_name() {
+    return isset($_SESSION['username']) ? $_SESSION['username'] : null;
   }
 ?>
